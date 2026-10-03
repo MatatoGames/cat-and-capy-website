@@ -106,7 +106,7 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
 </Base>
 
 <script>
-  import { meow, purr } from "../lib/sound";
+  import { purr } from "../lib/sound";
 
   // Put the store that fits this device first and badge it
   function detectPlatform(): "ios" | "android" | "desktop" {
@@ -125,11 +125,8 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
 
   // Pet the avatar
   const avatar = document.querySelector<HTMLButtonElement>("[data-avatar]");
-  let pets = 0;
   avatar?.addEventListener("click", () => {
-    pets++;
-    if (pets % 3 === 0) meow(1.2);
-    else purr();
+    purr();
     avatar.classList.remove("squish");
     void avatar.offsetWidth; // restart the animation
     avatar.classList.add("squish");

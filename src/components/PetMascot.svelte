@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { purr, meow } from "../lib/sound";
+  import { purr } from "../lib/sound";
 
   interface Props {
     src: string;
@@ -45,8 +45,7 @@
     } catch {
       /* storage unavailable */
     }
-    if (pets % 5 === 0) meow(1.2);
-    else purr();
+    purr();
 
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
