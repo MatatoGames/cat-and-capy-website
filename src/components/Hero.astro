@@ -57,16 +57,24 @@ import StoreButtons from "./StoreButtons.astro";
       img.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900 }).finished.then(() => img.remove());
       return;
     }
-    const dx = (Math.random() - 0.5) * 320;
-    const spin = (Math.random() - 0.5) * 720;
+    // Pop up at the tap, hang around with a wiggle so you can see who it is, then tumble away
+    const dir = Math.random() < 0.5 ? -1 : 1;
+    const dx = dir * (60 + Math.random() * 120);
+    const spin = dir * (90 + Math.random() * 180);
+    const at = (x: number, y: number, s: number, r: number) =>
+      `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${s}) rotate(${r}deg)`;
     img
       .animate(
         [
-          { transform: "translate(-50%, -50%) scale(.2) rotate(0deg)", opacity: 1 },
-          { transform: `translate(calc(-50% + ${dx * 0.5}px), calc(-50% - 160px)) scale(1) rotate(${spin * 0.4}deg)`, opacity: 1, offset: 0.35 },
-          { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${rect.height}px)) scale(1) rotate(${spin}deg)`, opacity: 0.9 },
+          { transform: at(0, 0, 0.2, 0), easing: "cubic-bezier(.3,1.6,.5,1)" },
+          { transform: at(0, -50, 1.1, 0), offset: 0.14 },
+          { transform: at(0, -56, 1, -7), offset: 0.26 },
+          { transform: at(0, -60, 1, 7), offset: 0.38 },
+          { transform: at(0, -62, 1, -4), offset: 0.5 },
+          { transform: at(0, -62, 1, 0), offset: 0.58, easing: "cubic-bezier(.5,0,.9,.6)" },
+          { transform: at(dx, rect.height, 0.9, spin), opacity: 0.85 },
         ],
-        { duration: 1400, easing: "cubic-bezier(.25,.6,.5,1)" },
+        { duration: 2800 },
       )
       .finished.then(() => img.remove());
   });
@@ -82,7 +90,7 @@ import StoreButtons from "./StoreButtons.astro";
     pointer-events: none;
   }
   .hero__art :global(.popcat) {
-    position: absolute; width: clamp(70px, 12vw, 140px); max-height: none; pointer-events: none; z-index: 3;
+    position: absolute; width: clamp(90px, 13vw, 160px); max-height: none; pointer-events: none; z-index: 3;
     filter: drop-shadow(0 6px 6px rgba(0, 0, 0, .35));
   }
   .hero__hint {
