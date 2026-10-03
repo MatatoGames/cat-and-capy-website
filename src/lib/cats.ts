@@ -11,6 +11,8 @@ export interface Cat {
 
 
 export const catImage = (id: string) => `/cats/${id}.webp`;
+/** Same icon with a baked-in white and navy sticker outline */
+export const stickerImage = (id: string) => `/stickers/${id}.webp`;
 
 // Names and bios come from the game's English cosmetics table.
 export const cats: Cat[] = [

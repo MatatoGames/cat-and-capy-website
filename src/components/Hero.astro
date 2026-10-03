@@ -29,7 +29,7 @@ import StoreButtons from "./StoreButtons.astro";
 </section>
 
 <script>
-  import { cats, catImage } from "../lib/cats";
+  import { cats, stickerImage } from "../lib/cats";
   import { meow } from "../lib/sound";
 
   const zone = document.querySelector<HTMLElement>("[data-pop-zone]");
@@ -48,7 +48,7 @@ import StoreButtons from "./StoreButtons.astro";
     nextCat = (nextCat + 1) % cats.length;
     const rect = zone.getBoundingClientRect();
     const img = document.createElement("img");
-    img.src = catImage(cat.id);
+    img.src = stickerImage(cat.id);
     img.alt = "";
     img.className = "popcat";
     img.style.left = `${e.clientX - rect.left}px`;
@@ -91,7 +91,7 @@ import StoreButtons from "./StoreButtons.astro";
     pointer-events: none;
   }
   .hero__art :global(.popcat) {
-    position: absolute; width: clamp(90px, 13vw, 160px); max-height: none; pointer-events: none; z-index: 3;
+    position: absolute; width: clamp(100px, 14vw, 175px); max-height: none; pointer-events: none; z-index: 3;
     filter: drop-shadow(0 6px 6px rgba(0, 0, 0, .35));
   }
   .hero__hint {

@@ -13,5 +13,6 @@ npm run build    # type-check + build to dist/
 - `src/lib/cats.ts`: the cats shown on the site
 - `src/lib/sound.ts`: Web Audio meows and pops (no audio files)
 - `public/cats`: icons exported from the Unity project's `Assets/Textures/Cosmetics`
+- `public/stickers`: the same icons with a white/navy outline baked in (used by the hero tap effect)
 
 Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.
