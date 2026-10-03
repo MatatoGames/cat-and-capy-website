@@ -72,7 +72,13 @@
 </div>
 
 <style>
-  .sky { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+  /* Sized to the large viewport (address bar hidden) so the cats don't jump when the
+     mobile address bar slides in and out; the extra bit just sits under the bar */
+  .sky {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 100vh; height: 100lvh;
+    overflow: hidden; z-index: 0; pointer-events: none;
+  }
   .floater {
     position: absolute; bottom: -120px; padding: 0; border: 0; background: none;
     pointer-events: auto; cursor: pointer; opacity: .55;
@@ -86,8 +92,8 @@
 
   @keyframes rise {
     from { transform: translate(0, 0) rotate(-6deg); }
-    50% { transform: translate(var(--sway), -60vh) rotate(6deg); }
-    to { transform: translate(0, calc(-100vh - 240px)) rotate(-6deg); }
+    50% { transform: translate(var(--sway), -60lvh) rotate(6deg); }
+    to { transform: translate(0, calc(-100lvh - 240px)) rotate(-6deg); }
   }
   @keyframes bob { to { translate: 0 -8px; } }
   @keyframes poof {
