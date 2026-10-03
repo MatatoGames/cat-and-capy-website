@@ -7,7 +7,6 @@ import Socials from "../components/Socials.astro";
 import SoundToggle from "../components/SoundToggle.svelte";
 import PetMascot from "../components/PetMascot.svelte";
 import CatStudio from "../components/CatStudio.svelte";
-import StackGame from "../components/StackGame.svelte";
 import mascot from "../assets/img/mascot.png";
 import logo from "../assets/img/logo.png";
 import appIcon from "../assets/img/app-icon.webp";
@@ -58,7 +57,6 @@ const structuredData = {
         <ul class="nav__links">
           <li><a href="#about">About</a></li>
           <li><a href="#cats">Cats</a></li>
-          <li><a href="#game">Mini-game</a></li>
           <li><a href="#trailer">Trailer</a></li>
           <li><a href="#screenshots">Screenshots</a></li>
         </ul>
@@ -103,14 +101,6 @@ const structuredData = {
       </div>
     </section>
 
-    <section class="section game" id="game">
-      <div class="wrap">
-        <p class="eyebrow eyebrow--light">Mini-game</p>
-        <h2>How many cats can Capy carry?</h2>
-        <p class="lede">Catch the falling cats to build the wobbliest tower you can. Your best score is saved on this device.</p>
-        <StackGame client:visible />
-      </div>
-    </section>
 
     <section class="section trailer" id="trailer">
       <div class="wrap">

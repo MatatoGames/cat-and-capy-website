@@ -135,10 +135,6 @@ p { margin: 0 0 1em; }
 .cats h2 { color: var(--navy); }
 .cats .lede { max-width: 40em; }
 
-/* Mini-game */
-.game { background: linear-gradient(var(--navy), var(--navy-2)); color: #fff; text-align: center; }
-.game .lede { color: rgba(255, 255, 255, .8); max-width: 34em; margin-inline: auto; }
-
 /* Trailer */
 .trailer { background: var(--navy); color: #fff; text-align: center; position: relative; overflow: hidden; }
 .trailer::before {

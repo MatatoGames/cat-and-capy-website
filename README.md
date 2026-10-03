@@ -11,7 +11,6 @@ npm run build    # type-check + build to dist/
 - `src/pages/index.astro`: the page
 - `src/components/`: sections (`.astro`, static) and interactive islands (`.svelte`)
 - `src/lib/cats.ts`: the cats shown on the site
-- `src/lib/stack-game.ts`: the "Stack the cats" mini-game engine
 - `src/lib/sound.ts`: Web Audio meows and pops (no audio files)
 - `public/cats`: icons exported from the Unity project's `Assets/Textures/Cosmetics`
 
