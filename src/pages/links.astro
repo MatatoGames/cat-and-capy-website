@@ -1,0 +1,254 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import FloatingCats from "../components/FloatingCats.svelte";
+import mascot from "../assets/img/mascot.png";
+import type { IconName } from "../lib/icons";
+
+interface LinkItem {
+  label: string;
+  sub?: string;
+  href: string;
+  icon: IconName;
+  /** which device this store link suits best */
+  platform?: "ios" | "android" | "desktop";
+  tone?: "steam" | "dark" | "discord" | "sun" | "white";
+  external?: boolean;
+}
+
+const stores: LinkItem[] = [
+  { label: "Steam", sub: "Windows & Mac · Early Access", href: "https://store.steampowered.com/app/3108140/", icon: "steam", platform: "desktop", tone: "steam", external: true },
+  { label: "App Store", sub: "iPhone & iPad", href: "https://apps.apple.com/us/app/cat-and-capy/id6754823529", icon: "apple", platform: "ios", tone: "dark", external: true },
+  { label: "Google Play", sub: "Android", href: "https://play.google.com/store/apps/details?id=com.MatatoGames.CatAndCapy", icon: "googleplay", platform: "android", tone: "dark", external: true },
+];
+
+const links: LinkItem[] = [
+  { label: "Merch shop", sub: "Tees, hoodies & caps 👕🧢", href: "https://matatogames.myshopify.com/en-no/collections/all", icon: "shop", tone: "sun", external: true },
+  { label: "Join the Discord", sub: "Chat, bug reports & sneak peeks", href: "https://discord.gg/m6xQkB4Da9", icon: "discord", tone: "discord", external: true },
+  { label: "YouTube", sub: "Every Cat & Capy video", href: "https://www.youtube.com/@matatogamestudio", icon: "youtube", tone: "white", external: true },
+  { label: "Play Stack the Cats", sub: "A tiny game, right in your browser", href: "/#game", icon: "gamepad", tone: "white" },
+  { label: "Meet the cats", sub: "The real cats behind the game", href: "/#cats", icon: "paw", tone: "white" },
+  { label: "Matato Games", sub: "The studio behind Cat & Capy", href: "https://matatogames.com", icon: "globe", tone: "white", external: true },
+];
+
+const socials: { label: string; href: string; icon: IconName }[] = [
+  { label: "TikTok", href: "https://www.tiktok.com/@matatogames", icon: "tiktok" },
+  { label: "Instagram", href: "https://www.instagram.com/matatogames/", icon: "instagram" },
+  { label: "YouTube", href: "https://www.youtube.com/@matatogamestudio", icon: "youtube" },
+  { label: "Snapchat", href: "https://snapchat.com/t/JvUZHnb0", icon: "snapchat" },
+  { label: "Discord", href: "https://discord.gg/m6xQkB4Da9", icon: "discord" },
+];
+
+const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank", rel: "noopener" } : {});
+---
+
+<Base title="Cat & Capy · Links" description="Play Cat & Capy on Steam, iPhone and Android, shop the merch, and follow the cats on TikTok, Instagram and YouTube.">
+  <FloatingCats client:idle count={8} />
+
+  <main id="main" class="links">
+    <header class="profile">
+      <button class="avatar" type="button" aria-label="Pet Cat and Capy" data-avatar>
+        <Image src={mascot} alt="Cat riding Capy" width={110} densities={[1, 2]} loading="eager" />
+      </button>
+      <h1>Cat &amp; Capy</h1>
+      <p>The cat and the capybara from the viral videos, now in their own 3D adventure.</p>
+      <ul class="socials" role="list">
+        {socials.map((s) => (
+          <li>
+            <a href={s.href} target="_blank" rel="noopener" aria-label={s.label} title={s.label}>
+              <Icon name={s.icon} size={22} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </header>
+
+    <section aria-labelledby="play-heading">
+      <h2 id="play-heading" class="group">🎮 Play the game</h2>
+      <ul class="list" role="list" data-stores>
+        {stores.map((item) => (
+          <li data-platform={item.platform}>
+            <a class={`link link--${item.tone}`} href={item.href} {...ext(item)}>
+              <span class="link__icon"><Icon name={item.icon} size={26} /></span>
+              <span class="link__text">
+                <strong>{item.label}</strong>
+                {item.sub && <small>{item.sub}</small>}
+              </span>
+              <span class="badge" hidden>For your device</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="more-heading">
+      <h2 id="more-heading" class="group">🐾 More cats</h2>
+      <ul class="list" role="list">
+        {links.map((item) => (
+          <li>
+            <a class={`link link--${item.tone}`} href={item.href} {...ext(item)}>
+              <span class="link__icon"><Icon name={item.icon} size={26} /></span>
+              <span class="link__text">
+                <strong>{item.label}</strong>
+                {item.sub && <small>{item.sub}</small>}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <footer class="foot">
+      <button class="share" type="button" data-share><Icon name="share" size={18} /> <span>Share this page</span></button>
+      <p><a href="/">catandcapy.com</a> · Made by Matato Games</p>
+    </footer>
+  </main>
+</Base>
+
+<script>
+  import { meow, purr } from "../lib/sound";
+
+  // Put the store that fits this device first and badge it
+  function detectPlatform(): "ios" | "android" | "desktop" {
+    const ua = navigator.userAgent;
+    if (/android/i.test(ua)) return "android";
+    if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return "ios";
+    return "desktop";
+  }
+  const list = document.querySelector<HTMLUListElement>("[data-stores]");
+  const match = list?.querySelector<HTMLLIElement>(`[data-platform="${detectPlatform()}"]`);
+  if (list && match) {
+    list.prepend(match);
+    match.classList.add("featured");
+    match.querySelector<HTMLElement>(".badge")?.removeAttribute("hidden");
+  }
+
+  // Pet the avatar
+  const avatar = document.querySelector<HTMLButtonElement>("[data-avatar]");
+  let pets = 0;
+  avatar?.addEventListener("click", () => {
+    pets++;
+    if (pets % 3 === 0) meow(1.2);
+    else purr();
+    avatar.classList.remove("squish");
+    void avatar.offsetWidth; // restart the animation
+    avatar.classList.add("squish");
+  });
+
+  // Share sheet on phones, copy link elsewhere
+  const share = document.querySelector<HTMLButtonElement>("[data-share]");
+  share?.addEventListener("click", async () => {
+    const url = "https://catandcapy.com/links";
+    const label = share.querySelector("span")!;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Cat & Capy", text: "Cat & Capy: play the game and follow the cats!", url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        label.textContent = "Link copied!";
+        setTimeout(() => (label.textContent = "Share this page"), 2000);
+      }
+    } catch {
+      /* share sheet dismissed */
+    }
+  });
+</script>
+
+<style>
+  :global(body) {
+    background:
+      radial-gradient(120% 60% at 50% 0%, #fff1a8 0%, transparent 60%),
+      linear-gradient(180deg, var(--sun) 0%, #ffb35c 55%, var(--orange) 100%);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+
+  .links {
+    position: relative; z-index: 1;
+    width: min(560px, 100% - 32px); margin: 0 auto;
+    padding: 40px 0 32px;
+    pointer-events: none; /* let taps reach the floating cats in empty space */
+  }
+  .links > * { pointer-events: auto; }
+  .links section, .links header { pointer-events: none; }
+  .links a, .links button, .links h1, .links p { pointer-events: auto; }
+
+  .profile { text-align: center; }
+  .avatar {
+    width: 132px; height: 132px; border-radius: 50%; padding: 10px 0 0; cursor: pointer;
+    background: var(--cream); border: 4px solid var(--navy); box-shadow: 0 6px 0 var(--navy);
+    display: grid; place-items: end center; overflow: hidden; margin: 0 auto;
+    transition: transform .15s;
+  }
+  .avatar:hover { transform: rotate(-4deg) scale(1.03); }
+  .avatar :global(img) { width: 104px; height: auto; transform-origin: 50% 100%; }
+  .avatar:global(.squish) :global(img) { animation: squish .45s cubic-bezier(.3, 1.6, .5, 1); }
+  @keyframes squish {
+    0% { transform: scale(1.18, .8); }
+    60% { transform: scale(.94, 1.08); }
+    100% { transform: scale(1); }
+  }
+  h1 {
+    margin: 16px 0 6px; font-size: clamp(2.2rem, 9vw, 3rem); color: #fff;
+    text-shadow: 0 3px 0 var(--berry), 0 6px 0 var(--navy);
+  }
+  .profile p { margin: 0 auto 16px; max-width: 26em; font-weight: 700; color: var(--navy); }
+
+  .socials { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .socials a {
+    display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
+    background: var(--navy); color: #fff; box-shadow: 0 3px 0 rgba(30, 27, 58, .35);
+    transition: transform .15s, background .15s;
+  }
+  .socials a:hover { transform: translateY(-3px) rotate(-6deg); background: var(--berry); }
+
+  .group {
+    margin: 32px 0 12px; font-size: 1.2rem; color: var(--navy); text-align: center;
+  }
+
+  .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .link {
+    position: relative; display: flex; align-items: center; gap: 14px;
+    min-height: 64px; padding: 10px 18px 10px 12px; border-radius: 18px;
+    text-decoration: none; border: 3px solid var(--navy); box-shadow: 0 5px 0 var(--navy);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .link:hover { transform: translateY(-2px) rotate(-.6deg); box-shadow: 0 7px 0 var(--navy); }
+  .list li:nth-child(even) .link:hover { transform: translateY(-2px) rotate(.6deg); }
+  .link:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--navy); }
+  .link__icon {
+    flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(255, 255, 255, .16);
+  }
+  .link__text { display: grid; line-height: 1.2; }
+  .link__text strong { font: 400 1.25rem var(--display); letter-spacing: .02em; }
+  .link__text small { font-weight: 700; font-size: .85rem; opacity: .8; }
+
+  .link--steam { background: linear-gradient(135deg, #1b2838, #2a475e); color: #fff; }
+  .link--dark { background: var(--navy); color: #fff; }
+  .link--discord { background: #5865f2; color: #fff; }
+  .link--sun { background: var(--cream); color: var(--navy); }
+  .link--sun .link__icon { background: var(--sun); }
+  .link--white { background: #fff; color: var(--navy); }
+  .link--white .link__icon { background: var(--cream-2); }
+
+  .featured .link { min-height: 78px; border-width: 3px; box-shadow: 0 6px 0 var(--berry); }
+  .featured .link__text strong { font-size: 1.45rem; }
+  .badge {
+    position: absolute; top: -11px; right: 14px;
+    background: var(--berry); color: #fff; font: 800 .7rem var(--body); letter-spacing: .05em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 999px; border: 2px solid var(--navy);
+  }
+  .badge[hidden] { display: none; }
+
+  .foot { margin-top: 36px; text-align: center; color: var(--navy); font-weight: 700; font-size: .9rem; }
+  .foot p { margin: 14px 0 0; }
+  .foot a { color: var(--navy); }
+  .share {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 10px 18px; border-radius: 999px; border: 2.5px solid var(--navy);
+    background: rgba(255, 255, 255, .85); color: var(--navy); font: 400 1rem var(--display); letter-spacing: .03em;
+  }
+  .share:hover { background: #fff; }
+</style>
