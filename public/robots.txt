@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://catandcapy.com/sitemap-index.xml

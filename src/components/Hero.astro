@@ -1,0 +1,108 @@
+---
+import { Picture } from "astro:assets";
+import keyart from "../assets/img/keyart.png";
+import StoreButtons from "./StoreButtons.astro";
+---
+
+<section class="hero" aria-label="Cat & Capy">
+  <div class="hero__art" data-pop-zone>
+    <Picture
+      src={keyart}
+      formats={["avif", "webp"]}
+      fallbackFormat="webp"
+      widths={[640, 960, 1280, 1920]}
+      sizes="100vw"
+      alt="Cat & Capy key art: the capybara and a crowd of cats with hats, a shopping cart and a pelican, around the game's logo"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <span class="hero__hint" aria-hidden="true">👆 Tap the picture!</span>
+  </div>
+
+  <div class="hero__card" id="play">
+    <p class="eyebrow">From the viral video series</p>
+    <h1>The cat and the capybara, <span class="hl">together</span> on a big 3D adventure.</h1>
+    <p class="lede">Ride on each other, rescue animals, and take on the nefarious bird army across colorful worlds. Play solo or in couch co-op.</p>
+    <StoreButtons />
+    <p class="platforms">Windows · macOS · iPhone &amp; iPad · Android</p>
+  </div>
+</section>
+
+<script>
+  import { cats, catImage } from "../lib/cats";
+  import { meow } from "../lib/sound";
+
+  const zone = document.querySelector<HTMLElement>("[data-pop-zone]");
+  const hint = zone?.querySelector<HTMLElement>(".hero__hint");
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const MAX_ON_SCREEN = 12;
+
+  // Clicking the key art launches a random cat out of the picture
+  zone?.addEventListener("click", (e) => {
+    hint?.remove();
+    if (zone.querySelectorAll(".popcat").length >= MAX_ON_SCREEN) return;
+
+    const cat = cats[Math.floor(Math.random() * cats.length)]!;
+    const rect = zone.getBoundingClientRect();
+    const img = document.createElement("img");
+    img.src = catImage(cat.id);
+    img.alt = "";
+    img.className = "popcat";
+    img.style.left = `${e.clientX - rect.left}px`;
+    img.style.top = `${e.clientY - rect.top}px`;
+    zone.append(img);
+    meow(cat.pitch, cat.voice);
+
+    if (reduceMotion) {
+      img.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900 }).finished.then(() => img.remove());
+      return;
+    }
+    const dx = (Math.random() - 0.5) * 320;
+    const spin = (Math.random() - 0.5) * 720;
+    img
+      .animate(
+        [
+          { transform: "translate(-50%, -50%) scale(.2) rotate(0deg)", opacity: 1 },
+          { transform: `translate(calc(-50% + ${dx * 0.5}px), calc(-50% - 160px)) scale(1) rotate(${spin * 0.4}deg)`, opacity: 1, offset: 0.35 },
+          { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${rect.height}px)) scale(1) rotate(${spin}deg)`, opacity: 0.9 },
+        ],
+        { duration: 1400, easing: "cubic-bezier(.25,.6,.5,1)" },
+      )
+      .finished.then(() => img.remove());
+  });
+</script>
+
+<style>
+  .hero { background: var(--navy); position: relative; padding-bottom: clamp(48px, 8vw, 96px); }
+  .hero__art { position: relative; overflow: hidden; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .hero__art :global(img) { width: 100%; max-height: 86vh; object-fit: cover; object-position: center 40%; }
+  .hero__art::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 30%;
+    background: linear-gradient(to bottom, transparent, var(--navy));
+    pointer-events: none;
+  }
+  .hero__art :global(.popcat) {
+    position: absolute; width: clamp(70px, 12vw, 140px); max-height: none; pointer-events: none; z-index: 3;
+    filter: drop-shadow(0 6px 6px rgba(0, 0, 0, .35));
+  }
+  .hero__hint {
+    position: absolute; z-index: 2; left: 50%; bottom: clamp(48px, 12vw, 150px); translate: -50% 0;
+    background: rgba(255, 255, 255, .9); color: var(--navy); border: 2px solid var(--navy);
+    font: 400 1rem var(--display); padding: 6px 14px; border-radius: 999px; pointer-events: none;
+    animation: nudge 1.6s ease-in-out infinite;
+  }
+  @keyframes nudge { 50% { transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { .hero__hint { animation: none; } }
+
+  .hero__card {
+    position: relative; z-index: 4;
+    width: min(880px, 100% - 32px); margin: clamp(-120px, -9vw, -40px) auto 0;
+    background: var(--cream); border: 3px solid var(--navy); border-radius: 28px;
+    padding: clamp(24px, 5vw, 48px);
+    box-shadow: 0 8px 0 var(--berry), 0 24px 60px rgba(0, 0, 0, .35);
+    text-align: center;
+  }
+  .hero__card h1 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); color: var(--navy); }
+  .hero__card .lede { max-width: 38em; margin-inline: auto; }
+  .platforms { margin: 18px 0 0; font-weight: 800; font-size: .85rem; letter-spacing: .06em; color: var(--ink-soft); }
+</style>

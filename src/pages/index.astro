@@ -1,0 +1,157 @@
+---
+import { Image, getImage } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Gallery from "../components/Gallery.astro";
+import Socials from "../components/Socials.astro";
+import SoundToggle from "../components/SoundToggle.svelte";
+import PetMascot from "../components/PetMascot.svelte";
+import CatStudio from "../components/CatStudio.svelte";
+import StackGame from "../components/StackGame.svelte";
+import mascot from "../assets/img/mascot.png";
+import logo from "../assets/img/logo.png";
+import appIcon from "../assets/img/app-icon.webp";
+
+const mascotImg = await getImage({ src: mascot, widths: [220, 320, 440], format: "webp" });
+
+const features = [
+  { icon: "🐾", title: "Ride together", text: "Hop on Capy's back to reach new heights, then split up when the path needs a smaller paw." },
+  { icon: "🐶", title: "Rescue animals", text: "Lost friends are hidden all over the world. Find them, free them and bring them home." },
+  { icon: "🐦", title: "Beat the bird army", text: "Face off against a giant pelican and a whole flock of feathered villains in big boss fights." },
+  { icon: "🛒", title: "Rockets & carts", text: "Blast off with rocket boosts and plow through enemies in a runaway shopping cart." },
+  { icon: "🎩", title: "Collect cats & hats", text: "Unlock famous cats from the videos and dress them up in an ever-growing pile of hats." },
+  { icon: "🎮", title: "Couch co-op", text: "One plays Cat, one plays Capy. Shared-screen co-op with full controller support, plus Remote Play Together on Steam." },
+];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  name: "Cat & Capy",
+  url: "https://catandcapy.com/",
+  image: "https://catandcapy.com/og.jpg",
+  description: "A heartwarming 3D platformer starring the cat and capybara from the viral Matato Games video series.",
+  genre: ["Platformer", "Adventure", "Action", "Casual"],
+  gamePlatform: ["Windows", "macOS", "iOS", "Android"],
+  playMode: ["SinglePlayer", "CoOp"],
+  publisher: { "@type": "Organization", name: "Matato Games", url: "https://matatogames.com" },
+  sameAs: [
+    "https://store.steampowered.com/app/3108140/",
+    "https://apps.apple.com/us/app/cat-and-capy/id6754823529",
+    "https://play.google.com/store/apps/details?id=com.MatatoGames.CatAndCapy",
+  ],
+};
+---
+
+<Base
+  title="Cat & Capy — a 3D platformer adventure"
+  description="Cat & Capy is a heartwarming 3D platformer starring the cat and capybara from the viral Matato Games videos. Ride together, rescue animals and battle the bird army. On Steam, iOS and Android."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <header class="nav" id="top">
+    <div class="nav__inner">
+      <a class="brand" href="#top" aria-label="Cat & Capy home">
+        <Image src={mascot} alt="" width={36} height={46} />
+        <span>Cat &amp; Capy</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav__links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#cats">Cats</a></li>
+          <li><a href="#game">Mini-game</a></li>
+          <li><a href="#trailer">Trailer</a></li>
+          <li><a href="#screenshots">Screenshots</a></li>
+        </ul>
+      </nav>
+      <SoundToggle client:idle />
+      <a class="btn btn--small btn--sun" href="#play">Get the game</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <Hero />
+
+    <section class="section about" id="about">
+      <div class="wrap about__grid">
+        <div class="about__text">
+          <p class="eyebrow">About the game</p>
+          <h2>Two best friends. One very wobbly stack.</h2>
+          <p>Cat and Capy set off on an adventurous journey through colorful 3D worlds, set in the same universe as the viral video series on TikTok and Instagram.</p>
+          <p>Explore, uncover hidden paths and rescue animals as you go. By mounting on top of each other, Cat and Capy reach higher places, solve platforming challenges and use tools like rocket-powered boosts and chaotic shopping cart attacks to push forward.</p>
+          <p>It's easy to pick up but full of playful action. Whether you're charging through obstacles or hunting for secrets, there's always something new to find.</p>
+        </div>
+        <PetMascot client:visible src={mascotImg.src} srcset={mascotImg.srcSet.attribute} width={315} height={400} />
+      </div>
+
+      <ul class="wrap features" role="list">
+        {features.map((f) => (
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">{f.icon}</span>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section cats" id="cats">
+      <div class="wrap">
+        <p class="eyebrow">Meet the cast</p>
+        <h2>Pick a cat. Give it a hat.</h2>
+        <p class="lede">Every cat in the game is a real cat from the videos and the community. Tap one to say hi, then dress them up and save the picture.</p>
+        <CatStudio client:visible />
+      </div>
+    </section>
+
+    <section class="section game" id="game">
+      <div class="wrap">
+        <p class="eyebrow eyebrow--light">Mini-game</p>
+        <h2>How many cats can Capy carry?</h2>
+        <p class="lede">Catch the falling cats to build the wobbliest tower you can. Your best score is saved on this device.</p>
+        <StackGame client:visible />
+      </div>
+    </section>
+
+    <section class="section trailer" id="trailer">
+      <div class="wrap">
+        <p class="eyebrow eyebrow--light">Watch</p>
+        <h2>Gameplay trailer</h2>
+        <div class="trailer__frame">
+          <video controls preload="none" playsinline poster="/media/trailer-poster.webp" width="1280" height="720">
+            <source src="/media/trailer.mp4" type="video/mp4" />
+            Your browser can't play this video. <a href="https://store.steampowered.com/app/3108140/">Watch it on Steam</a>.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shots" id="screenshots">
+      <div class="wrap">
+        <p class="eyebrow">Screenshots</p>
+        <h2>Meadows, temples, snow and sea</h2>
+        <Gallery />
+      </div>
+    </section>
+
+    <section class="section community" id="community">
+      <div class="wrap community__inner">
+        <Image class="community__icon" src={appIcon} alt="" width={112} height={112} />
+        <p class="eyebrow">Community</p>
+        <h2>Come hang out with the cats</h2>
+        <p class="lede">Report bugs, share ideas and catch new videos the moment they drop.</p>
+        <Socials />
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <Image src={logo} alt="Cat & Capy" width={120} />
+      <p>Made by <a href="https://matatogames.com" target="_blank" rel="noopener">Matato Games</a> · © {new Date().getFullYear()}</p>
+      <ul class="footer__links" role="list">
+        <li><a href="https://matatogames.com/catandcapy-privacy-policy.html" target="_blank" rel="noopener">Privacy policy</a></li>
+        <li><a href="https://matatogames.com/Contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+</Base>

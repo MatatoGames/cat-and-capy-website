@@ -1,0 +1,91 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+const files = import.meta.glob<{ default: ImageMetadata }>("../assets/shots/*.webp", { eager: true });
+const byNumber = (path: string) => Number(path.match(/shot(\d+)/)?.[1] ?? 0);
+
+const alts: Record<number, string> = {
+  1: "Cat riding Capy through a sunny green meadow",
+  2: "Cat on a wooden bridge under a pink cherry blossom tree",
+  3: "Floating stone platforms in a stormy temple world",
+  4: "A giant pelican boss spreading its wings at sunset",
+  5: "A huge creature swinging a cage in a circular boss arena",
+  6: "Riding a shopping cart down a snowy slope past a pine tree",
+  7: "Split-screen co-op in an underwater world with a sunken ship",
+  8: "Cat and Capy on bright platforms under a purple night sky",
+  9: "A sandy beach with a whale, a volcano and a capybara in a top hat",
+  10: "A shopping cart racing along a winding red track in the sky",
+  11: "Cat and Capy relaxing by a steaming hot spring",
+};
+
+const shots = await Promise.all(
+  Object.entries(files)
+    .sort(([a], [b]) => byNumber(a) - byNumber(b))
+    .map(async ([path, mod]) => {
+      const n = byNumber(path);
+      const full = await getImage({ src: mod.default, width: 1600, format: "webp" });
+      return { n, src: mod.default, full: full.src, alt: alts[n] ?? "Cat & Capy screenshot" };
+    }),
+);
+---
+
+<ul class="gallery" role="list">
+  {shots.map((shot) => (
+    <li>
+      <button type="button" data-full={shot.full} aria-label={`View larger: ${shot.alt}`}>
+        <Image src={shot.src} alt={shot.alt} widths={[400, 640, 960]} sizes="(max-width: 600px) 100vw, (max-width: 1100px) 50vw, 380px" loading="lazy" />
+      </button>
+    </li>
+  ))}
+</ul>
+
+<dialog class="lightbox" aria-label="Screenshot">
+  <button class="lightbox__close" type="button" aria-label="Close">×</button>
+  <button class="lightbox__nav lightbox__prev" type="button" aria-label="Previous screenshot">‹</button>
+  <img alt="" />
+  <button class="lightbox__nav lightbox__next" type="button" aria-label="Next screenshot">›</button>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>(".lightbox")!;
+  const dialogImg = dialog.querySelector("img")!;
+  const shots = [...document.querySelectorAll<HTMLButtonElement>(".gallery button")];
+  let current = 0;
+
+  function show(i: number): void {
+    current = (i + shots.length) % shots.length;
+    const btn = shots[current]!;
+    dialogImg.src = btn.dataset.full ?? "";
+    dialogImg.alt = btn.querySelector("img")?.alt ?? "";
+  }
+
+  shots.forEach((btn, i) =>
+    btn.addEventListener("click", () => {
+      show(i);
+      dialog.showModal();
+    }),
+  );
+
+  dialog.querySelector(".lightbox__close")!.addEventListener("click", () => dialog.close());
+  dialog.querySelector(".lightbox__prev")!.addEventListener("click", () => show(current - 1));
+  dialog.querySelector(".lightbox__next")!.addEventListener("click", () => show(current + 1));
+  dialog.addEventListener("click", (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+  });
+
+  // Swipe between screenshots on touch screens
+  let touchX: number | null = null;
+  dialog.addEventListener("touchstart", (e) => (touchX = e.touches[0]?.clientX ?? null), { passive: true });
+  dialog.addEventListener("touchend", (e) => {
+    const end = e.changedTouches[0]?.clientX;
+    if (touchX === null || end === undefined) return;
+    const dx = end - touchX;
+    if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  });
+</script>
