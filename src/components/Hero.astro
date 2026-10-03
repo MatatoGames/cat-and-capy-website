@@ -11,7 +11,7 @@ import StoreButtons from "./StoreButtons.astro";
       formats={["avif", "webp"]}
       fallbackFormat="webp"
       widths={[640, 960, 1280, 1920]}
-      sizes="100vw"
+      sizes="(min-width: 960px) 55vw, 100vw"
       alt="Cat & Capy key art: the capybara and a crowd of cats with hats, a shopping cart and a pelican, around the game's logo"
       loading="eager"
       fetchpriority="high"
@@ -105,4 +105,38 @@ import StoreButtons from "./StoreButtons.astro";
   .hero__card h1 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); color: var(--navy); }
   .hero__card .lede { max-width: 38em; margin-inline: auto; }
   .platforms { margin: 18px 0 0; font-weight: 800; font-size: .85rem; letter-spacing: .06em; color: var(--ink-soft); }
+
+  /* Desktop: text and stores on the left, framed key art on the right, all above the fold */
+  @media (min-width: 960px) {
+    .hero {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: center;
+      gap: clamp(32px, 4vw, 64px);
+      padding: clamp(40px, 6vh, 72px) max(32px, (100vw - 1240px) / 2) clamp(48px, 8vh, 88px);
+      background: radial-gradient(60% 80% at 75% 40%, rgba(240, 122, 43, .28), transparent 70%), var(--navy);
+    }
+    .hero__art {
+      order: 2; border-radius: 24px; border: 3px solid var(--sun);
+      box-shadow: 0 8px 0 var(--orange), 0 30px 80px rgba(0, 0, 0, .45);
+      rotate: 1.2deg; transition: rotate .3s;
+    }
+    .hero__art:hover { rotate: 0deg; }
+    .hero__art :global(img) { max-height: none; aspect-ratio: 16 / 9; }
+    .hero__art::after { display: none; }
+    .hero__hint { bottom: 16px; }
+
+    .hero__card {
+      order: 1; width: auto; margin: 0; padding: 0; text-align: left;
+      background: none; border: 0; box-shadow: none;
+    }
+    .hero__card :global(.eyebrow) { color: var(--sun); }
+    .hero__card h1 { color: #fff; font-size: clamp(2.1rem, 3.3vw, 3rem); }
+    .hero__card .lede { color: rgba(255, 255, 255, .78); margin-inline: 0; }
+    .hero__card :global(.stores) { justify-content: flex-start; gap: 10px; }
+    .hero__card :global(.store) { padding: 8px 14px 8px 12px; gap: 8px; }
+    .hero__card :global(.store svg) { width: 24px; height: 24px; }
+    .hero__card :global(.store span) { font-size: 1.12rem; }
+    .hero__card :global(.store) { min-width: 0; border-color: rgba(255, 255, 255, .28); background: var(--navy-2); }
+    .hero__card :global(.store--steam) { background: linear-gradient(135deg, #1b2838, #2a475e); }
+    .platforms { color: rgba(255, 255, 255, .55); }
+  }
 </style>

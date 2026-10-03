@@ -64,7 +64,7 @@
 <style>
   .studio {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
     gap: clamp(20px, 4vw, 40px);
     margin-top: 32px;
     align-items: start;
