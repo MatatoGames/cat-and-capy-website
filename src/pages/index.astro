@@ -7,6 +7,8 @@ import Socials from "../components/Socials.astro";
 import SoundToggle from "../components/SoundToggle.svelte";
 import PetMascot from "../components/PetMascot.svelte";
 import CatStudio from "../components/CatStudio.svelte";
+import NewsletterSignup from "../components/NewsletterSignup.svelte";
+import { newsletterEnabled } from "../lib/newsletter";
 import mascot from "../assets/img/mascot.png";
 import logo from "../assets/img/logo.png";
 import appIcon from "../assets/img/app-icon.webp";
@@ -122,6 +124,17 @@ const structuredData = {
         <Gallery />
       </div>
     </section>
+
+    {newsletterEnabled && (
+      <section class="section news" id="news">
+        <div class="wrap">
+          <p class="eyebrow">Newsletter</p>
+          <h2>Get the cat news first</h2>
+          <p class="lede">New cats, big updates and new games, straight to your inbox. Something new is in the works, too…</p>
+          <NewsletterSignup client:visible />
+        </div>
+      </section>
+    )}
 
     <section class="section community" id="community">
       <div class="wrap community__inner">

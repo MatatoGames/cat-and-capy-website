@@ -135,6 +135,11 @@ p { margin: 0 0 1em; }
 .cats h2 { color: var(--navy); }
 .cats .lede { max-width: 40em; }
 
+/* Newsletter */
+.news { background: var(--cream-2); text-align: center; }
+.news h2 { color: var(--navy); }
+.news .lede { max-width: 34em; margin-inline: auto; }
+
 /* Trailer */
 .trailer { background: var(--navy); color: #fff; text-align: center; position: relative; overflow: hidden; }
 .trailer::before {

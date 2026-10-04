@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 import FloatingCats from "../components/FloatingCats.svelte";
+import NewsletterSignup from "../components/NewsletterSignup.svelte";
+import { newsletterEnabled } from "../lib/newsletter";
 import mascot from "../assets/img/mascot.png";
 import type { IconName } from "../lib/icons";
 
@@ -80,6 +82,13 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
         ))}
       </ul>
     </section>
+
+    {newsletterEnabled && (
+      <section aria-labelledby="news-heading">
+        <h2 id="news-heading" class="group">💌 Get the news</h2>
+        <NewsletterSignup client:visible variant="compact" />
+      </section>
+    )}
 
     <section aria-labelledby="more-heading">
       <h2 id="more-heading" class="group">🐾 More cats</h2>
@@ -168,7 +177,7 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
   }
   .links > * { pointer-events: auto; }
   .links section, .links header { pointer-events: none; }
-  .links a, .links button, .links h1, .links p { pointer-events: auto; }
+  .links a, .links button, .links h1, .links p, .links :global(.signup) { pointer-events: auto; }
 
   .profile { text-align: center; }
   .avatar {
