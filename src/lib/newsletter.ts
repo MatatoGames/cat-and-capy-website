@@ -7,7 +7,10 @@ export const KIT_FORM_ID = "";
 // In Kit: Grow → Subscribers → Tags → click the tag; the number at the end of the URL.
 export const RHYTHM_TAG_ID = "";
 
-/** The signup is hidden on the live site until the form ID is filled in. */
-export const newsletterEnabled = KIT_FORM_ID !== "" || import.meta.env.DEV;
+/** Parked for now (2026-10-04): set to true to show the signup on the main and links pages. */
+const SHOW_NEWSLETTER = false;
+
+/** Shown only when switched on; on the live site it also needs the Kit form ID. */
+export const newsletterEnabled = SHOW_NEWSLETTER && (KIT_FORM_ID !== "" || import.meta.env.DEV);
 
 export const kitSubscribeUrl = (formId: string) => `https://app.kit.com/forms/${formId}/subscriptions`;
