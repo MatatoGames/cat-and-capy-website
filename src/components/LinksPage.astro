@@ -50,11 +50,13 @@ interface Props {
   signupFirst?: boolean;
   title: string;
   description: string;
+  image?: string;
+  canonicalPath?: string;
 }
-const { signupFirst = false, title, description } = Astro.props;
+const { signupFirst = false, title, description, image, canonicalPath } = Astro.props;
 ---
 
-<Base title={title} description={description}>
+<Base {title} {description} {image} {canonicalPath}>
   <FloatingCats client:idle count={8} />
 
   <main id="main" class="links">

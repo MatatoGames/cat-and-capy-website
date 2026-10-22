@@ -4,11 +4,15 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  /** Link-preview image in /public (1200×630) */
+  image?: string;
+  /** Path search engines should treat as the main copy of this page */
+  canonicalPath?: string;
 }
 
-const { title, description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL("/og.jpg", Astro.site);
+const { title, description, image = "/og.jpg", canonicalPath } = Astro.props;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
 ---
 
 <!doctype html>
