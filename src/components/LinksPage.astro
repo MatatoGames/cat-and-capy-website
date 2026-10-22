@@ -63,7 +63,6 @@ const { signupFirst = false, title, description } = Astro.props;
         <Image src={mascot} alt="Cat riding Capy" width={110} densities={[1, 2]} loading="eager" />
       </button>
       <h1>Cat &amp; Capy</h1>
-      <p>From the viral videos!</p>
       <ul class="socials" role="list">
         {socials.map((s) => (
           <li>
@@ -237,7 +236,7 @@ const { signupFirst = false, title, description } = Astro.props;
   }
   .profile p { margin: 0 auto 16px; max-width: 26em; font-weight: 700; color: var(--navy); }
 
-  .socials { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .socials { list-style: none; padding: 0; margin: 14px 0 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
   .socials a {
     display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%;
     background: var(--navy); color: #fff; box-shadow: 0 3px 0 rgba(30, 27, 58, .35);
