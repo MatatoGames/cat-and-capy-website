@@ -17,12 +17,12 @@ import appIcon from "../assets/img/app-icon.webp";
 const mascotImg = await getImage({ src: mascot, widths: [220, 320, 440], format: "webp" });
 
 const features = [
-  { icon: "🐾", title: "Ride together", text: "Hop on Capy's back to reach new heights, then split up when the path needs a smaller paw." },
-  { icon: "🐶", title: "Rescue animals", text: "Lost friends are hidden all over the world. Find them, free them and bring them home." },
-  { icon: "🐦", title: "Beat the bird army", text: "Face off against a giant pelican and a whole flock of feathered villains in big boss fights." },
-  { icon: "🛒", title: "Rockets & carts", text: "Blast off with rocket boosts and plow through enemies in a runaway shopping cart." },
-  { icon: "🎩", title: "Collect cats & hats", text: "Unlock famous cats from the videos and dress them up in an ever-growing pile of hats." },
-  { icon: "🎮", title: "Couch co-op", text: "One plays Cat, one plays Capy. Shared-screen co-op with full controller support, plus Remote Play Together on Steam." },
+  { icon: "🐾", title: "Ride together", text: "Hop on Capy to reach new heights." },
+  { icon: "🐶", title: "Rescue animals", text: "Find lost friends and bring them home." },
+  { icon: "🐦", title: "Beat the bird army", text: "Big boss fights, like the giant pelican." },
+  { icon: "🛒", title: "Rockets & carts", text: "Rocket boosts and runaway shopping carts." },
+  { icon: "🎩", title: "Collect cats & hats", text: "Famous cats from the videos, and lots of hats." },
+  { icon: "🎮", title: "Couch co-op", text: "One plays Cat, one plays Capy." },
 ];
 
 const structuredData = {
@@ -78,9 +78,7 @@ const structuredData = {
         <div class="about__text">
           <p class="eyebrow">About the game</p>
           <h2>Two best friends. One very wobbly stack.</h2>
-          <p>Cat and Capy set off on an adventurous journey through colorful 3D worlds, set in the same universe as the viral video series on TikTok and Instagram.</p>
-          <p>Explore, uncover hidden paths and rescue animals as you go. By mounting on top of each other, Cat and Capy reach higher places, solve platforming challenges and use tools like rocket-powered boosts and chaotic shopping cart attacks to push forward.</p>
-          <p>It's easy to pick up but full of playful action. Whether you're charging through obstacles or hunting for secrets, there's always something new to find.</p>
+          <p>Cat and Capy from the viral videos, on a big adventure through colorful 3D worlds. Explore, find secrets and stack up to reach new places!</p>
         </div>
         <PetMascot client:visible src={mascotImg.src} srcset={mascotImg.srcSet.attribute} width={315} height={400} />
       </div>
@@ -102,7 +100,7 @@ const structuredData = {
       <div class="wrap">
         <p class="eyebrow">Meet the cast</p>
         <h2>Meet the cats</h2>
-        <p class="lede">Every cat in the game is a real cat from the videos and the community. Tap one to say hi and read their story.</p>
+        <p class="lede">Real cats from the videos. Tap one to say hi!</p>
         <CatStudio client:visible />
       </div>
     </section>
@@ -132,9 +130,9 @@ const structuredData = {
     {newsletterEnabled && (
       <section class="section news" id="news">
         <div class="wrap">
-          <p class="eyebrow">Early access</p>
-          <h2>Play Rhythm Cat &amp; Capy before anyone else</h2>
-          <p class="lede">A Cat &amp; Capy rhythm game is coming to mobile. Join the list for a chance to play it early, and hear about new Cat &amp; Capy games first.</p>
+          <p class="eyebrow">Newsletter</p>
+          <h2>🎵 Rhythm Cat &amp; Capy is coming!</h2>
+          <p class="lede">Get Cat &amp; Capy news. You might get to test games early too 😻</p>
           <NewsletterSignup client:visible />
         </div>
       </section>
@@ -145,7 +143,7 @@ const structuredData = {
         <Image class="community__icon" src={appIcon} alt="" width={112} height={112} />
         <p class="eyebrow">Community</p>
         <h2>Come hang out with the cats</h2>
-        <p class="lede">Report bugs, share ideas and catch new videos the moment they drop.</p>
+        <p class="lede">Chat, share ideas and see new stuff first.</p>
         <Socials />
       </div>
     </section>

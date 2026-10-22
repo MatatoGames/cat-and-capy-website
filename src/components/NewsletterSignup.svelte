@@ -78,13 +78,13 @@
           <img src={stickerImage(id)} alt="" style="--i:{i}" />
         {/each}
       </div>
-      <p class="big">Almost there!</p>
-      <p>Check your inbox and click the link to confirm. Then you're on the early access list. 🎵🐾</p>
+      <p class="big">You're in! 🎉</p>
+      <p>Check your inbox 💌</p>
     </div>
   {:else if status === "verify"}
     <div class="done" role="status">
       <p class="big">One more step!</p>
-      <p>Taking you to a quick robot check to finish signing up…</p>
+      <p>Quick robot check…</p>
     </div>
   {:else}
     <form method="post" {action} onsubmit={submit}>
@@ -119,7 +119,7 @@
       {/if}
 
       <p class="fine">
-        You'll get a chance to play Rhythm Cat &amp; Capy before it's out, plus occasional Cat &amp; Capy news: new games, updates and new cats. No spam, unsubscribe anytime.
+        Cat &amp; Capy news, now and then. No spam, unsubscribe anytime.
         <a href="https://matatogames.com/catandcapy-privacy-policy.html" target="_blank" rel="noopener">Privacy policy</a>
       </p>
     </form>
