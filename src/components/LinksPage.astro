@@ -63,7 +63,7 @@ const { signupFirst = false, title, description } = Astro.props;
         <Image src={mascot} alt="Cat riding Capy" width={110} densities={[1, 2]} loading="eager" />
       </button>
       <h1>Cat &amp; Capy</h1>
-      <p>From the viral videos! 🐱🦫</p>
+      <p>From the viral videos!</p>
       <ul class="socials" role="list">
         {socials.map((s) => (
           <li>
@@ -84,7 +84,7 @@ const { signupFirst = false, title, description } = Astro.props;
     )}
 
     <section aria-labelledby="play-heading">
-      <h2 id="play-heading" class="group">🎮 Play the game</h2>
+      <h2 id="play-heading" class="group">🎮 Cat &amp; Capy <span class="kind">3D platformer</span></h2>
       <ul class="list" role="list" data-stores>
         {stores.map((item) => (
           <li data-platform={item.platform}>
@@ -102,11 +102,11 @@ const { signupFirst = false, title, description } = Astro.props;
     </section>
 
     <section aria-labelledby="army-heading">
-      <h2 id="army-heading" class="group">🛒 New game!</h2>
+      <h2 id="army-heading" class="group">🛒 Cat &amp; Capy Army <span class="kind">Cat army runner</span></h2>
       <a class="army" href={ARMY_PLAY_URL} target="_blank" rel="noopener">
         <Image src={armyIcon} alt="" width={64} height={64} class="army__icon" />
         <span class="link__text">
-          <strong>Cat &amp; Capy Army</strong>
+          <strong>Play now</strong>
           <small>Android{ARMY_APPSTORE_URL ? " & iOS" : " · iOS soon"}</small>
         </span>
         <span class="army__play"><Icon name="googleplay" size={22} /></span>
@@ -245,6 +245,11 @@ const { signupFirst = false, title, description } = Astro.props;
   }
   .socials a:hover { transform: translateY(-3px) rotate(-6deg); background: var(--berry); }
 
+  .kind {
+    display: block; width: fit-content; margin: 4px auto 0;
+    font: 800 .72rem var(--body); letter-spacing: .08em; text-transform: uppercase;
+    background: var(--navy); color: #fff; padding: 3px 10px; border-radius: 999px;
+  }
   .pitch { margin: -4px 0 12px; text-align: center; font-weight: 800; color: var(--navy); }
   .top-signup .group { margin-top: 24px; font-size: 1.45rem; }
 
