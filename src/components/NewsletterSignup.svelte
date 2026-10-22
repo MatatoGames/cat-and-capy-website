@@ -14,7 +14,7 @@
   let email = $state("");
   let olderThan13 = $state(false);
   let honeypot = $state("");
-  let status = $state<"idle" | "sending" | "done" | "error">("idle");
+  let status = $state<"idle" | "sending" | "verify" | "done" | "error">("idle");
   let errorText = $state("");
 
   const uid = Math.random().toString(36).slice(2, 8);
@@ -51,8 +51,12 @@
 
     try {
       const res = await fetch(action, { method: "POST", body, headers: { Accept: "application/json" } });
-      const data = (await res.json().catch(() => ({}))) as { status?: string; errors?: { messages?: string[] } };
-      if (res.ok && data.status !== "failed") {
+      const data = (await res.json().catch(() => ({}))) as { status?: string; url?: string; errors?: { messages?: string[] } };
+      if (data.status === "quarantined" && data.url) {
+        // Kit's spam filter wants a quick robot check; its page finishes the signup
+        status = "verify";
+        setTimeout(() => window.location.assign(data.url!), 1200);
+      } else if (res.ok && data.status !== "failed") {
         status = "done";
         pop(1.3);
       } else {
@@ -76,6 +80,11 @@
       </div>
       <p class="big">Almost there!</p>
       <p>Check your inbox and click the link to confirm. Then you're on the early access list. 🎵🐾</p>
+    </div>
+  {:else if status === "verify"}
+    <div class="done" role="status">
+      <p class="big">One more step!</p>
+      <p>Taking you to a quick robot check to finish signing up…</p>
     </div>
   {:else}
     <form method="post" {action} onsubmit={submit}>
