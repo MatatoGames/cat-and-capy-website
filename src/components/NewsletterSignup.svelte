@@ -4,13 +4,15 @@
   import { pop } from "../lib/sound";
 
   interface Props {
-    /** "full" for the main page section, "compact" for the links page */
+    /** "full" for the main page section, "compact" for the links page and /rhythm */
     variant?: "full" | "compact";
+    /** Text on the submit button */
+    cta?: string;
   }
-  let { variant = "full" }: Props = $props();
+  let { variant = "full", cta = "Count me in!" }: Props = $props();
 
   let email = $state("");
-  let rhythm = $state(false);
+  let olderThan13 = $state(false);
   let honeypot = $state("");
   let status = $state<"idle" | "sending" | "done" | "error">("idle");
   let errorText = $state("");
@@ -22,6 +24,11 @@
   async function submit(e: SubmitEvent): Promise<void> {
     e.preventDefault();
     if (status === "sending") return;
+    if (!olderThan13) {
+      status = "error";
+      errorText = "Please confirm you're 13 or older.";
+      return;
+    }
     if (honeypot) {
       status = "done"; // quietly ignore bots
       return;
@@ -39,7 +46,8 @@
 
     const body = new FormData();
     body.append("email_address", email.trim());
-    if (rhythm && RHYTHM_TAG_ID) body.append("tags[]", RHYTHM_TAG_ID);
+    // Everyone who signs up asked for early access to the rhythm game
+    if (RHYTHM_TAG_ID) body.append("tags[]", RHYTHM_TAG_ID);
 
     try {
       const res = await fetch(action, { method: "POST", body, headers: { Accept: "application/json" } });
@@ -67,7 +75,7 @@
         {/each}
       </div>
       <p class="big">Almost there!</p>
-      <p>Check your inbox and click the link to confirm. Then you're on the list. 🐾</p>
+      <p>Check your inbox and click the link to confirm. Then you're on the early access list. 🎵🐾</p>
     </div>
   {:else}
     <form method="post" {action} onsubmit={submit}>
@@ -85,12 +93,13 @@
         />
 
       <label class="check">
-        <input type="checkbox" name="tags[]" value={RHYTHM_TAG_ID} bind:checked={rhythm} disabled={status === "sending"} />
-        <span>🎵 I'd like a chance to <strong>playtest the upcoming Cat &amp; Capy rhythm game</strong> on mobile. Testers are picked from this list!</span>
+        <input type="checkbox" required bind:checked={olderThan13} disabled={status === "sending"} />
+        <span>I'm 13 or older</span>
       </label>
+      {#if RHYTHM_TAG_ID}<input type="hidden" name="tags[]" value={RHYTHM_TAG_ID} />{/if}
 
       <button class="btn btn--sun submit" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Signing up…" : "Sign me up"}
+        {status === "sending" ? "Signing up…" : cta}
       </button>
 
       <!-- Bots fill in fields people can't see -->
@@ -101,7 +110,7 @@
       {/if}
 
       <p class="fine">
-        Occasional emails about Cat &amp; Capy: updates, new cats and new games. No spam, unsubscribe anytime.
+        You'll get a chance to play Rhythm Cat &amp; Capy before it's out, plus occasional Cat &amp; Capy news: new games, updates and new cats. No spam, unsubscribe anytime.
         <a href="https://matatogames.com/catandcapy-privacy-policy.html" target="_blank" rel="noopener">Privacy policy</a>
       </p>
     </form>

@@ -3,6 +3,7 @@ import { Image, getImage } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
 import Gallery from "../components/Gallery.astro";
+import ArmySection from "../components/ArmySection.astro";
 import Socials from "../components/Socials.astro";
 import SoundToggle from "../components/SoundToggle.svelte";
 import PetMascot from "../components/PetMascot.svelte";
@@ -58,6 +59,7 @@ const structuredData = {
       <nav aria-label="Main">
         <ul class="nav__links">
           <li><a href="#about">About</a></li>
+          <li><a href="#army">Cat &amp; Capy Army</a></li>
           <li><a href="#cats">Cats</a></li>
           <li><a href="#trailer">Trailer</a></li>
           <li><a href="#screenshots">Screenshots</a></li>
@@ -94,6 +96,8 @@ const structuredData = {
       </ul>
     </section>
 
+    <ArmySection />
+
     <section class="section cats" id="cats">
       <div class="wrap">
         <p class="eyebrow">Meet the cast</p>
@@ -128,9 +132,9 @@ const structuredData = {
     {newsletterEnabled && (
       <section class="section news" id="news">
         <div class="wrap">
-          <p class="eyebrow">Newsletter</p>
-          <h2>Get the cat news first</h2>
-          <p class="lede">New cats, big updates and new games, straight to your inbox. Something new is in the works, too…</p>
+          <p class="eyebrow">Early access</p>
+          <h2>Play Rhythm Cat &amp; Capy before anyone else</h2>
+          <p class="lede">A Cat &amp; Capy rhythm game is coming to mobile. Join the list for a chance to play it early, and hear about new Cat &amp; Capy games first.</p>
           <NewsletterSignup client:visible />
         </div>
       </section>

@@ -7,6 +7,8 @@ import NewsletterSignup from "../components/NewsletterSignup.svelte";
 import { newsletterEnabled } from "../lib/newsletter";
 import mascot from "../assets/img/mascot.png";
 import type { IconName } from "../lib/icons";
+import armyIcon from "../assets/army/icon.png";
+import { ARMY_PLAY_URL, ARMY_APPSTORE_URL } from "../lib/games";
 
 interface LinkItem {
   label: string;
@@ -83,9 +85,27 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
       </ul>
     </section>
 
+    <section aria-labelledby="army-heading">
+      <h2 id="army-heading" class="group">🛒 New game!</h2>
+      <a class="army" href={ARMY_PLAY_URL} target="_blank" rel="noopener">
+        <Image src={armyIcon} alt="" width={64} height={64} class="army__icon" />
+        <span class="link__text">
+          <strong>Cat &amp; Capy Army</strong>
+          <small>Out now on Google Play{ARMY_APPSTORE_URL ? " and the App Store" : " · iPhone coming soon"}</small>
+        </span>
+        <span class="army__play"><Icon name="googleplay" size={22} /></span>
+      </a>
+      {ARMY_APPSTORE_URL && (
+        <a class="link link--dark army__ios" href={ARMY_APPSTORE_URL} target="_blank" rel="noopener">
+          <span class="link__icon"><Icon name="apple" size={26} /></span>
+          <span class="link__text"><strong>Cat &amp; Capy Army on iPhone</strong><small>App Store</small></span>
+        </a>
+      )}
+    </section>
+
     {newsletterEnabled && (
       <section aria-labelledby="news-heading">
-        <h2 id="news-heading" class="group">💌 Get the news</h2>
+        <h2 id="news-heading" class="group">🎵 Play Rhythm Cat &amp; Capy early</h2>
         <NewsletterSignup client:visible variant="compact" />
       </section>
     )}
@@ -246,6 +266,22 @@ const ext = (item: { external?: boolean }) => (item.external ? { target: "_blank
     padding: 3px 10px; border-radius: 999px; border: 2px solid var(--navy);
   }
   .badge[hidden] { display: none; }
+
+  .army {
+    position: relative; display: flex; align-items: center; gap: 14px; text-decoration: none;
+    padding: 12px 18px 12px 12px; border-radius: 20px; border: 3px solid var(--navy);
+    background: linear-gradient(135deg, #fff6e0, #ffd9e6); color: var(--navy);
+    box-shadow: 0 6px 0 var(--berry); transition: transform .15s, box-shadow .15s;
+  }
+  .army:hover { transform: translateY(-2px) rotate(.6deg); box-shadow: 0 8px 0 var(--berry); }
+  .army:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--berry); }
+  .army :global(.army__icon) { width: 60px; height: 60px; border-radius: 14px; border: 2.5px solid var(--navy); flex: none; }
+  .army .link__text strong { font-size: 1.4rem; }
+  .army__play {
+    margin-left: auto; flex: none; display: grid; place-items: center; width: 42px; height: 42px;
+    border-radius: 12px; background: var(--navy); color: #fff;
+  }
+  .army__ios { margin-top: 12px; }
 
   .foot { margin-top: 36px; text-align: center; color: var(--navy); font-weight: 700; font-size: .9rem; }
   .foot p { margin: 14px 0 0; }

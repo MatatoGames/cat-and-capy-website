@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import icon from "../assets/army/icon.png";
+import shot1 from "../assets/army/shot1.png";
+import shot2 from "../assets/army/shot2.png";
+import shot5 from "../assets/army/shot5.png";
+import shot6 from "../assets/army/shot6.png";
+import { ARMY_PLAY_URL, ARMY_APPSTORE_URL } from "../lib/games";
+
+const shots = [
+  { src: shot1, alt: "Shopping carts full of cats driving through gates under cherry blossoms" },
+  { src: shot2, alt: "The cat army firing fish at the giant Cooked Chicken boss" },
+  { src: shot5, alt: "Cat carts facing the Pelican boss" },
+  { src: shot6, alt: "A huge stacked cat army blasting through a barricade" },
+];
+---
+
+<section class="section army" id="army">
+  <div class="wrap army__grid">
+    <div class="army__text">
+      <p class="eyebrow">New game · Out now</p>
+      <div class="army__title">
+        <Image src={icon} alt="" width={84} height={84} class="army__icon" />
+        <h2>Cat &amp; Capy Army</h2>
+      </div>
+      <p class="lede">Load up the shopping carts! Capybaras drive, cats ride along, and fish cannons keep the grumpy birds away.</p>
+      <ul class="army__facts" role="list">
+        <li>🛒 Pick the gates that add cats and build the biggest army you can</li>
+        <li>🐦 Boss fights against the Biggest Bird, the Pelican and more</li>
+        <li>🌋 150 stages in six worlds, then endless stages</li>
+        <li>🐱 Rescue all 17 cats from Cat &amp; Capy</li>
+      </ul>
+      <div class="army__cta">
+        <a class="store" href={ARMY_PLAY_URL} target="_blank" rel="noopener">
+          <Icon name="googleplay" size={28} />
+          <span><small>Get it on</small>Google Play</span>
+        </a>
+        {ARMY_APPSTORE_URL ? (
+          <a class="store" href={ARMY_APPSTORE_URL} target="_blank" rel="noopener">
+            <Icon name="apple" size={28} />
+            <span><small>Download on the</small>App Store</span>
+          </a>
+        ) : (
+          <span class="soon"><Icon name="apple" size={18} /> iPhone version coming soon</span>
+        )}
+      </div>
+    </div>
+
+    <ul class="army__shots" role="list">
+      {shots.map((s) => (
+        <li>
+          <Image src={s.src} alt={s.alt} widths={[240, 360, 480]} sizes="(max-width: 860px) 42vw, 220px" loading="lazy" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .army { background: linear-gradient(160deg, #fff1d6, #ffe0ea); overflow: hidden; }
+  .army__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 56px); align-items: center; }
+  @media (max-width: 860px) { .army__grid { grid-template-columns: minmax(0, 1fr); } }
+
+  .army__title { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .army__title h2 { margin: 0; color: var(--navy); }
+  .army__title :global(.army__icon) {
+    width: 72px; height: 72px; border-radius: 18px; border: 3px solid var(--navy); box-shadow: 0 4px 0 var(--navy); flex: none;
+  }
+  .army .lede { color: var(--ink); }
+  .army__facts { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 8px; font-weight: 700; color: var(--ink-soft); }
+
+  .army__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .soon { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: .9rem; color: var(--ink-soft); }
+
+  .army__shots {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;
+  }
+  .army__shots li {
+    border-radius: 18px; overflow: hidden; border: 3px solid var(--navy); box-shadow: 0 5px 0 var(--navy);
+    rotate: -2deg; transition: rotate .2s, transform .2s;
+  }
+  .army__shots li:nth-child(even) { rotate: 2deg; transform: translateY(18px); }
+  .army__shots li:hover { rotate: 0deg; transform: translateY(-4px); }
+  .army__shots :global(img) { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; }
+  @media (max-width: 860px) {
+    .army__shots { grid-template-columns: repeat(4, 42vw); overflow-x: auto; padding: 6px 4px 30px; scroll-snap-type: x mandatory; }
+    .army__shots li { scroll-snap-align: start; }
+  }
+</style>
